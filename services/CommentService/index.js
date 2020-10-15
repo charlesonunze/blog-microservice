@@ -32,5 +32,9 @@ app.route('/posts/:id/comments')
     return res.status(201).send(comments)
   })
 
+app.post('/events', (req, res) => {
+  console.log('Event Recieved:', req.body.type);
+  return res.send('ok')
+})
 
 app.listen(4001, _ => console.log('Listening on 4001'))
