@@ -14,7 +14,7 @@ app.route('/posts')
 
   .get((req, res) => res.send(posts))
 
-  .post((req, res) => {
+  .post(async (req, res) => {
     const id = randomBytes(4).toString('hex');
     const { title } = req.body;
 
@@ -22,6 +22,9 @@ app.route('/posts')
       id,
       title
     }
+
+    const event = { type: 'POST_CREATED', data: { id, title } };
+    await Axios.post('http://localhost:5000/events', event)
 
     return res.status(201).send(posts[id])
   })
