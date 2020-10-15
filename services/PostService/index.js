@@ -29,4 +29,9 @@ app.route('/posts')
     return res.status(201).send(posts[id])
   })
 
+app.post('/events', (req, res) => {
+  console.log('Event Recieved:', req.body.type);
+  return res.send('ok')
+})
+
 app.listen(4000, _ => console.log('Listening on 4000'))
