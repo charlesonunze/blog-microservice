@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { randomBytes } = require('crypto');
+const { default: Axios } = require('axios');
 
 const app = express();
 
