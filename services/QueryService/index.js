@@ -18,8 +18,6 @@ app.post('/events', (req, res) => {
   if (type === 'POST_CREATED') {
     const { id, title } = data;
     posts[id] = { id, title, comments: [] }
-
-    console.log('posts', posts);
   };
 
   if (type === 'COMMENT_CREATED') {
@@ -27,9 +25,9 @@ app.post('/events', (req, res) => {
     const post = posts[postId];
 
     post.comments.push({ id, content })
-
-    console.log('posts', posts);
   };
+
+  return res.send('OK')
 })
 
 app.listen(4002, _ => console.log('Listening on 4002'))
