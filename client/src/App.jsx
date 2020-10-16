@@ -8,7 +8,7 @@ function App() {
 	const [posts, updatePosts] = useState([]);
 
 	const fetctPosts = async () => {
-		const { data } = await axios.get('http://localhost:4000/posts/');
+		const { data } = await axios.get('http://localhost:4002/posts/');
 		updatePosts(Object.values(data));
 	};
 
@@ -27,11 +27,24 @@ function App() {
 		updatePosts(_posts);
 	};
 
+	const addCommentHandler = async (postId, comment) => {
+		const _posts = [...posts];
+		const index = _posts.findIndex((post) => post.id === postId);
+
+		const { data: comments } = await axios.post(
+			`http://localhost:4001/posts/${postId}/comments/`,
+			comment
+		);
+
+		_posts[index].comments = comments;
+		updatePosts(_posts);
+	};
+
 	return (
 		<div className='container' style={{ padding: '30px' }}>
 			<CreatePost onPostAdd={addPostHandler} />
 			<hr />
-			<PostList />
+			<PostList posts={posts} onCommentAdd={addCommentHandler} />
 		</div>
 	);
 }

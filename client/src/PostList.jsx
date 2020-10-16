@@ -1,46 +1,33 @@
 import React from 'react';
+import CommentList from './CommentList';
+import CreateComment from './CreateComment';
 
-const Post = () => (
-	<div className='card col-sm' style={{ width: '18rem' }}>
-		<div className='card-body'>
-			<h4 className='card-title'>Card title</h4>
-			<hr />
+const Post = ({ post, onCommentAdd }) => {
+	const { id, title, comments } = post;
 
-			<h5 className='card-subtitle mb-2 text-muted'>Comments:</h5>
+	return (
+		<div className='card col-sm-6' style={{ width: '18rem' }}>
+			<div className='card-body'>
+				<h4 className='card-title'>{title}</h4>
+				<hr />
 
-			<ul>
-				<li className='card-text'>Comment one</li>
-				<li className='card-text'>Comment one</li>
-			</ul>
+				<h5 className='card-subtitle mb-2 text-muted'>Comments:</h5>
 
-			<form>
-				<div className='form-group'>
-					<input
-						type='text'
-						id='comment'
-						name='comment'
-						className='form-control'
-						aria-describedby='comment'
-						placeholder='Enter comment'
-					/>
-				</div>
-
-				<button type='submit' className='btn btn-primary'>
-					Submit
-				</button>
-			</form>
+				<CommentList comments={comments} />
+				<CreateComment postId={id} onCommentAdd={onCommentAdd} />
+			</div>
 		</div>
-	</div>
-);
+	);
+};
 
-const PostList = () => {
+const PostList = ({ posts, onCommentAdd }) => {
 	return (
 		<>
-			<h1>PostList</h1>
+			<h1>Post Lists</h1>
 
 			<div className='row'>
-				{[1, 2, 3].map((_, i) => (
-					<Post key={i} />
+				{posts.map((post, i) => (
+					<Post key={i} post={post} onCommentAdd={onCommentAdd} />
 				))}
 			</div>
 		</>
