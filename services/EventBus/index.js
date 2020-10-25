@@ -7,16 +7,24 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/events', (req, res) => {
-  const event = req.body;
+const events = [];
 
-  Axios.post('http://localhost:4000/events', event)
-  Axios.post('http://localhost:4001/events', event)
-  Axios.post('http://localhost:4002/events', event)
-  Axios.post('http://localhost:4003/events', event)
+app
+  .route('/events')
 
-  return res.send({ status: 'OK' })
-})
+  .get((req, res) => res.send(events))
+
+  .post((req, res) => {
+    const event = req.body;
+    events.push(event)
+
+    Axios.post('http://localhost:4000/events', event)
+    Axios.post('http://localhost:4001/events', event)
+    Axios.post('http://localhost:4002/events', event)
+    Axios.post('http://localhost:4003/events', event)
+
+    return res.send({ status: 'OK' })
+  })
 
 
 app.listen(5000, _ => console.log('Listening on 5000'))
