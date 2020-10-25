@@ -22,18 +22,40 @@ app.route('/posts/:id/comments')
 
     const comments = commentsByPostId[postId] || [];
 
-    comments.push({ id: commentId, content })
+    comments.push({ id: commentId, content, status: 'pending' })
 
     commentsByPostId[postId] = comments
 
-    const event = { type: 'COMMENT_CREATED', data: { id: commentId, content, postId } };
+    const event = {
+      type: 'COMMENT_CREATED',
+      data: { id: commentId, content, postId, status: 'pending' }
+    };
+
     await Axios.post('http://localhost:5000/events', event)
 
     return res.status(201).send(comments)
   })
 
-app.post('/events', (req, res) => {
-  console.log('Event Recieved:', req.body.type);
+app.post('/events', async (req, res) => {
+  const { type, data } = req.body;
+
+  console.log('Event Recieved:', type);
+
+  if (type === 'COMMENT_MODERATED') {
+    const { id, content, postId, status } = data;
+    const comments = commentsByPostId[postId] || [];
+
+    const comment = comments.find((c) => c.id === id)
+    comment.status = status
+
+    const event = {
+      type: 'COMMENT_UPDATED',
+      data: { id, content, postId, status }
+    };
+
+    await Axios.post('http://localhost:5000/events', event)
+  }
+
   return res.send('ok')
 })
 

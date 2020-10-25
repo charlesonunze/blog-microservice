@@ -13,6 +13,7 @@ app.post('/events', (req, res) => {
   Axios.post('http://localhost:4000/events', event)
   Axios.post('http://localhost:4001/events', event)
   Axios.post('http://localhost:4002/events', event)
+  Axios.post('http://localhost:4003/events', event)
 
   return res.send({ status: 'OK' })
 })
